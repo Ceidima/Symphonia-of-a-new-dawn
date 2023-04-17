@@ -13,10 +13,6 @@ public class ButtonController : MonoBehaviour
     void Start()
     {
         theSR = GetComponent<SpriteRenderer>();
-
-
-
-
     }
 
     // Update is called once per frame

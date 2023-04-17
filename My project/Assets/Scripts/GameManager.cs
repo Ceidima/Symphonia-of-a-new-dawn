@@ -5,92 +5,178 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    // aquí un key to press
+    public KeyCode keyToPress;
+    /////////////////////////////
     public AudioSource theMusic;
     public bool startPlaying;
     public BeatScroller theBS;
-    public static GameManager instance; 
+    public static GameManager instance;
     public int CurrentScore;
-    //nuevas cosas para perfect score
+    // nuevas cosas para perfect score ------>no importa por ahora
     public int ScorePerNote = 100;
     public int ScorePerGoodnote = 125;
     public int ScorePerPerfectnote = 150;
 
-    //aqui comienza los multiplier
+    // aquí comienza los arrays de trackers
+    // fuego
+    public int fucurrentElmtTrack;
+    public int fuelementTracker;
 
-    public int currentMultiplier;
-    public int multiplierTracker;
+    public int[] fuelementThresholds;
+    // Agua
+    public int agcurrentElmtTrack;
+    public int agelementTracker;
 
-    public int[] multiplierThresholds;
+    public int[] agelementThresholds;
+    // Tierra
+    public int ticurrentElmtTrack;
+    public int tielementTracker;
 
-    
+    public int[] tielementThresholds;
+    // Aire
+    public int aicurrentElmtTrack;
+    public int aielementTracker;
 
+    public int[] aielementThresholds;
 
-
-    //a partir de es texto en canvas
-    public Text scoreText;
-    public Text multiText;
+    // a partir de es texto en canvas-----> de momento no sirve
+    // aquí Cambio elemental
+    public bool Fuego = false;
+    public bool Agua = false;
+    public bool Tierra = false;
+    public bool Aire = false;
 
 
     // Start is called before the first frame update
     void Start()
     {
         instance = this;
-        scoreText.text = "Score: 0 ";
-        currentMultiplier = 1;
+        fucurrentElmtTrack = 1;
+        // aquí fuego al iniciar el juego
+        Fuego = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(!startPlaying)
+        if (!startPlaying)
         {
-            if(Input.anyKeyDown){
-                startPlaying= true;
+            if (Input.anyKeyDown)
+            {
+                startPlaying = true;
                 theBS.hasStarted = true;
 
                 theMusic.Play();
             }
         }
+        // elementos
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            Agua = true;
+            Tierra = false;
+            Aire = false;
+            Fuego = false;
+            Debug.Log("Cambio a Agua");
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Agua = false;
+            Tierra = true;
+            Aire = false;
+            Fuego = false;
+            Debug.Log("Cambio a Tierra");
+        }
+
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            Agua = false;
+            Tierra = false;
+            Aire = true;
+            Fuego = false;
+            Debug.Log("Cambio a Aire");
+        }
+
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            Agua = false;
+            Tierra = false;
+            Aire = false;
+            Fuego = true;
+            Debug.Log("Cambio a Fuego");
+        }
+
     }
 
-    public void NoteHit()
+    
+
+public void NoteHit()
+{
+    if (Fuego)
     {
-        //Debug.Log("Hit on Time");
-
-        if(currentMultiplier - 1  < multiplierThresholds.Length) // esto es un seguro para que no siga avanzando si supera el largo  del arreglo
+        if (fucurrentElmtTrack - 1 < fuelementThresholds.Length) // esto es un seguro para que no siga avanzando si supera el largo  del arreglo
         {
-            multiplierTracker ++; //para que comience a contar los puntos necesarios para que avance el multiplicador
+            fuelementTracker++; //para que comience a contar los puntos necesarios para que avance el multiplicador
+        }
 
-            if(multiplierThresholds[currentMultiplier-1] <= multiplierTracker)  // para que avance y se reincie el tracker y el multiplier, busca la 
-            {                                                                   //posicion del arreglo  0 por eso el -1
-              multiplierTracker = 0;
-              currentMultiplier++;     
-            }
+    }
+
+    if (Agua)
+    {
+        if (agcurrentElmtTrack - 1 < agelementThresholds.Length) // esto es un seguro para que no siga avanzando si supera el largo  del arreglo
+        {
+            agelementTracker++; //para que comience a contar los puntos necesarios para que avance el multiplicador
 
         }
 
-        multiText.text = "Multiplier : x " + currentMultiplier;
-        
-
-        //CurrentScore += ScorePerNote * currentMultiplier;
-        scoreText.text = "Score " + CurrentScore;
     }
+
+    if (Tierra)
+    {
+        if (ticurrentElmtTrack - 1 < tielementThresholds.Length) // esto es un seguro para que no siga avanzando si supera el largo  del arreglo
+        {
+            tielementTracker++; //para que comience a contar los puntos necesarios para que avance el multiplicador
+
+
+        }
+
+    }
+
+    if (Aire)
+    {
+        if (aicurrentElmtTrack - 1 < aielementThresholds.Length) // esto es un seguro para que no siga avanzando si supera el largo  del arreglo
+        {
+            aielementTracker++; //para que comience a contar los puntos necesarios para que avance el multiplicador
+
+
+        }
+
+    }
+
+
+    Debug.Log(fucurrentElmtTrack);
+
+}
+
+
+
 
     public void Normalhit()
     {   
-        CurrentScore += ScorePerNote * currentMultiplier;
+   
         NoteHit();
     }
 
     public void Goodhit()
     {
-        CurrentScore += ScorePerGoodnote * currentMultiplier;
+
         NoteHit();
     }
     
     public void Perfecthit()
     {
-        CurrentScore += ScorePerPerfectnote * currentMultiplier;
+
         NoteHit();
 
     }
@@ -99,9 +185,5 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Missed Log");
         
-        currentMultiplier = 1;
-        multiplierTracker = 0;
-
-        multiText.text = "Multiplier : x " + currentMultiplier;
     }
 }
