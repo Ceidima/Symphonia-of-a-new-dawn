@@ -5,7 +5,9 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     public float speed = 20f;
+    public int damage = 40;
     public Rigidbody rb;
+    public GameObject impactEffect;
     // Start is called before the first frame update
     void Start()
     {
@@ -13,9 +15,11 @@ public class Bullet : MonoBehaviour
     }
 
     void OnTriggerEnter(Collider hitInfo) {
+        Enemy enemy= hitInfo.GetComponent<Enemy>();
+        enemy.TakeDamage(damage);
         Debug.Log("Cambio le pegaste");
+        Instantiate(impactEffect,transform.position, transform.rotation);
         Destroy(gameObject);
-        
     }
 
     // Update is called once per frame

@@ -5,6 +5,7 @@ using UnityEngine;
 public class Magic : MonoBehaviour
 {
     public Transform firePPoint;
+    public Transform WaterPoint;
     public GameObject FuegoPrefab;
     public GameObject AguaPrefab;
     public GameObject TierraPrefab;
@@ -14,6 +15,9 @@ public class Magic : MonoBehaviour
     public int agcontador = 0;
     public int ticontador = 0;
     public int aicontador = 0;
+
+
+
 
     
     // Start is called before the first frame update
@@ -110,7 +114,7 @@ public class Magic : MonoBehaviour
     void ShootAgua()
     {
         if (!hasShot){
-            Instantiate(AguaPrefab, firePPoint.position , firePPoint.rotation); /* el instantiate es para poder spawnear cosas, en este caso crea la magia que actualmente estamos usando */
+            Instantiate(AguaPrefab, WaterPoint.position , WaterPoint.rotation); /* el instantiate es para poder spawnear cosas, en este caso crea la magia que actualmente estamos usando */
             hasShot = true;
             agcontador++;
         } 
